@@ -32,3 +32,18 @@ def sayhi(name):
 
 hello = input("say your name: ")
 print(sayhi(hello))
+class sigmas:
+    def gyatt(self):
+        print(f"{self}has a big gyatt")
+    self.stats=[
+    gyatt=100
+    sigma=100
+
+
+    ]
+print("im and sigma" \")
+      print("i love latinas")
+
+player=sigmas()
+player.gyatt()
+print(player)
