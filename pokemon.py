@@ -3,7 +3,7 @@ import random
 import time
 
 pygame.init()
-north_exit
+
 TILE_SIZE = 32
 LAB_OFFSET = TILE_SIZE * 10
 WIDTH, HEIGHT = 640, 480
@@ -11,7 +11,6 @@ def update_map_size():
     global MAP_WIDTH, MAP_HEIGHT
     MAP_WIDTH = WORLD_W // TILE_SIZE
     MAP_HEIGHT = WORLD_H // TILE_SIZE
-
 WORLD_W, WORLD_H = 3200, 3200
 update_map_size()
 MAP_WIDTH = WORLD_W // TILE_SIZE
@@ -30,6 +29,7 @@ areas = {
         "size": (2000, 2000),
     }
 }
+
 world_id = 1
 area_banner_text = ""
 area_banner_timer = 0
@@ -101,8 +101,7 @@ INSIDE_LAB_BG = pygame.transform.scale(
 )
 tree_img = pygame.image.load("tree.png").convert_alpha()
 TREE_SRC = pygame.Rect(0, 0, 48, 64)
-scale = 2
-
+scale = 1
 tree_img = pygame.transform.scale(
     tree_img,
     (TREE_SRC.width * scale, TREE_SRC.height * scale)
@@ -128,7 +127,6 @@ bush_encounters = []
 rare_bushes = []
 forest_trees = []
 forest_bushes = []
-
 tree_rect = pygame.Rect(560, 260, TILE_SIZE, TILE_SIZE )
 house_rect = house_img.get_rect(topleft=(700, 360))
 lab_entry = pygame.Rect(
@@ -170,7 +168,7 @@ house_right_hitbox = pygame.Rect(
 )
 north_exit = pygame.Rect(
     house_rect.centerx - 40,
-    house_rect.y - 600,
+    house_rect.y - 700,
     80,
     40
 )
@@ -180,19 +178,8 @@ door_touch_rect = pygame.Rect(
     door_rect.width + 24,
     door_rect.height + 8,
 )
-lab_rect = lab_img.get_rect(
-    topleft=(
-        house_rect.centerx + (10 * TILE_SIZE),
-        house_rect.y - (6 * TILE_SIZE)
-    )
-)
+
     
-lab_door_rect = pygame.Rect(
-    lab_rect.centerx - 25,
-    lab_rect.bottom - 60,
-    50,
-    60
-)
 
 
 pokemart_rect = pokemart_img.get_rect(
@@ -215,17 +202,39 @@ pokecenter_door = pygame.Rect(
     50,
     60
 )
+lab_rect = lab_img.get_rect(
+    topleft=(
+        house_rect.centerx - 96,
+        house_rect.bottom + (5 * TILE_SIZE)
+    )
+)
+print("HOUSE LOCATION:", house_rect)
+print("LAB LOCATION:", lab_rect)
 
+lab_door_rect = pygame.Rect(
+    lab_rect.centerx - 25,
+    lab_rect.bottom - 60,
+    50,
+    60
+)
+route_exit = pygame.Rect(
+    WORLD_W//2 - 40,
+    50,
+    80,
+    40
+)
+if world_id == 2:
+
+    forest_start_y = 1400
 
 starter_npc = pygame.Rect(300, 180, TILE_SIZE, TILE_SIZE)
 starter_selected = False
 # creates the bush in front of house
-clump_start_x = house_rect.left + TILE_SIZE * 2
-clump_start_y = house_rect.bottom + (3 * TILE_SIZE)
+clump_start_x = house_rect.left + (3 * TILE_SIZE)
+clump_start_y = house_rect.bottom + (5 * TILE_SIZE)
 
-
-clump_rows = 3
-clump_cols = 4
+clump_rows = 2
+clump_cols = 5
 for row in range(clump_rows):
     for col in range(clump_cols):
         x = clump_start_x + col * TILE_SIZE
@@ -251,8 +260,7 @@ for row in range(clump_rows):
 
                 obstacles.append(bush_rect)
 
-forest_start_y = WORLD_H - 800
-
+forest_start_y = 1400
 for row in range(8):
 
     for col in range(8):
@@ -262,19 +270,19 @@ for row in range(8):
         if row % 2 == 1:
             offset = 64
 
-        x = 300 + (col * 160) + offset
-        y = forest_start_y + (row * 120)
+        x = 300 + (col * TILE_SIZE)
+        y = forest_start_y + (row * TILE_SIZE * 2)
 
         tree_rect_new = pygame.Rect(
             x,
             y,
-            96,
-            128
+            TILE_SIZE,
+            TILE_SIZE * 2
         )
 
         forest_trees.append(tree_rect_new)
 
-
+direction = 10
 for row in range(10):
 
     for col in range(12):
@@ -283,21 +291,13 @@ for row in range(10):
 
         y = forest_start_y + 80 + (row * 96)
 
-        forest_bushes.append(
-            pygame.Rect(
-                x,
-                y,
-                TILE_SIZE,
-                TILE_SIZE
-            )
-        )
+        
 obstacles.extend([
     tree_hitbox,
     house_left_hitbox,
     house_right_hitbox
     
 ])
-tree_rect_new
 for bush in zigzag_bushes:
     obstacles.append(bush)
 
@@ -311,21 +311,26 @@ for tree in zigzag_trees:
         )
     )
 obstacles.append(north_exit)
-north_exit = pygame.Rect(
-    house_rect.centerx - 40,
-    house_rect.y - 600,   # goes upward behind house
-    80,
-    40
-)
+if world_id == 2:
+    pygame.draw.rect(
+        screen,
+        (255,0,0),
+        (
+            route_exit.x-camera_x,
+            route_exit.y-camera_y,
+            route_exit.width,
+            route_exit.height
+        )
+    )
 
 for tree in forest_trees:
     if tree.y > WORLD_H - 600:
         continue
     forest_hitbox = pygame.Rect(
-        tree.x + 24,
-        tree.bottom - 42,
-        tree.width - 48,
-        42
+        tree.x + 10,
+        tree.bottom - 30,
+        tree.width - 20,
+        30
     )
 
     obstacles.append(forest_hitbox)
@@ -336,6 +341,7 @@ for bush in forest_bushes:
     if bush.y > WORLD_H - 600:
         continue
         obstacles.append(bush)
+
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -428,6 +434,7 @@ TYPE_CHART = {
         "psychic": 2.0
     }
 }
+
 def load_area(area_id):
     global WORLD_W, WORLD_H, current_area
 
@@ -976,10 +983,10 @@ def draw(player, npc, camera_x, camera_y):
             (tree.x - camera_x, tree.y - camera_y)
         )
     path_width = 3
-    path_length = 16
-    for i in range(18):
+    path_length = 20
+    for i in range(22):
 
-        x = house_rect.centerx - camera_x
+        x = house_rect.centerx - TILE_SIZE - camera_x
         y = house_rect.y - (i * TILE_SIZE) - camera_y
 
         screen.blit(
@@ -1266,44 +1273,44 @@ while running:
     dt = clock.tick(60)
     screen.fill((0, 0, 0))
     if game_state == "world":
+        desired_move = None
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            desired_move = (0, -1)
+        elif keys[pygame.K_DOWN]:
+            desired_move = (0, 1)
+        elif keys[pygame.K_LEFT]:
+            desired_move = (-1, 0)
+        elif keys[pygame.K_RIGHT]:
+            desired_move = (1, 0)
         if keys[pygame.K_x] and has_running_shoes:
             is_sprinting = True
         else:
             is_sprinting = False
     # start movement 
-        if not moving:
-            if keys[pygame.K_UP]:
-                move_y = -1
-                move_x = 0
-                moving = True
-                direction = "up"
-            elif keys[pygame.K_DOWN]:
-                move_y = 1
-                move_x = 0
-                moving = True
-                direction = "down"
-            elif keys[pygame.K_LEFT]:
-                move_x = -1
-                move_y = 0
-                moving = True
-                direction = "left"
-            elif keys[pygame.K_RIGHT]:
-                move_x = 1
-                move_y = 0
-                moving = True
-                direction = "right"
-        # Set tile target
+        if desired_move is None:
             if moving:
-                target_x = player.x + move_x * tile_size
-                target_y = player.y + move_y * tile_size
-                target_x = max(0, min(WORLD_W - player_width, target_x))
-                target_y = max(0, min(WORLD_H - player_height, target_y))
-                if target_x == player.x and target_y == player.y:
-                    moving = False
+                moving = False
+                move_x = 0
+                move_y = 0
+                target_x = round(player.x / tile_size) * tile_size
+                target_y = round(player.y / tile_size) * tile_size
+                player.x = target_x
+                player.y = target_y
+        else:
+            move_x, move_y = desired_move
+            moving = True
+            if move_y < 0:
+                direction = "up"
+            elif move_y > 0:
+                direction = "down"
+            elif move_x < 0:
+                direction = "left"
+            else:
+                direction = "right"
         if moving:
         # animation
             frame += animation_speed
@@ -1325,23 +1332,27 @@ while running:
                 player_sprite = walk_right[int(frame)]
         # movement
             speed = sprint_speed if is_sprinting else base_speed
-            if player.x < target_x:
-                player.x += speed
-            elif player.x > target_x:
-                player.x -= speed
-
-            if player.y < target_y:
-                player.y += speed
-            elif player.y > target_y:
-                player.y -= speed
-        # tile snapping
-            if abs(player.x - target_x) <= speed:
-                player.x = target_x
-            if abs(player.y - target_y) <= speed:
-                player.y = target_y
-        # movement stop
-            if player.x == target_x and player.y == target_y:
+            prev_x = player.x
+            prev_y = player.y
+            player.x += move_x * speed
+            player.y += move_y * speed
+            player.x = max(0, min(WORLD_W - player_width, player.x))
+            player.y = max(0, min(WORLD_H - player_height, player.y))
+            blocked = False
+            for obstacle in obstacles:
+                if player.colliderect(obstacle):
+                    player.x = prev_x
+                    player.y = prev_y
+                    blocked = True
+                    break
+            if blocked:
                 moving = False
+                move_x = 0
+                move_y = 0
+                target_x = round(player.x / tile_size) * tile_size
+                target_y = round(player.y / tile_size) * tile_size
+                player.x = target_x
+                player.y = target_y
     # idle
         if not moving:
             if direction == "down":
@@ -1370,44 +1381,89 @@ while running:
         if player.colliderect(lab_door_rect):
             game_state = "lab"
             moving = False
-        if player.colliderect(lab_door_rect):
-            game_state = "lab"
         if player.colliderect(pokemart_door):
             game_state = "pokemart"
         if player.colliderect(pokecenter_door):
             game_state = "pokecenter"
-        if player.colliderect(north_exit):
+        if world_id == 2 and player.colliderect(route_exit):
 
-            world_id += 1
-            if world_id == 2:
-                show_area_name("Route One")
+            world_id = 3
 
-            WORLD_W, WORLD_H = 3200, 3200
+            load_area(3)
 
-            player.x = WORLD_W // 2
-            player.y = WORLD_H - 120
+            show_area_name("First Town")
+
+
+            player.x = WORLD_W//2
+            player.y = WORLD_H-200
+
+
+            # clear route objects
+
+            zigzag_path.clear()
+            zigzag_bushes.clear()
+            zigzag_trees.clear()
 
             forest_trees.clear()
             forest_bushes.clear()
-            bush_encounters.clear()
-            rare_bushes.clear()
+
             obstacles.clear()
 
-            zigzag_path = []
-            zigzag_bushes = []
-            zigzag_trees = []
 
-            path_width = 4
+            # town buildings
 
-            x = 200
-            y = WORLD_H - 400
+            pokemart_rect.topleft = (
+                300,
+                300
+            )
+
+            pokecenter_rect.topleft = (
+                600,
+                300
+            )
+
+
+        if player.colliderect(north_exit):
+
+            world_id = 2
+            load_area(2)
+            show_area_name("Route One")
+
+            # reset objects
+            forest_trees.clear()
+            forest_bushes.clear()
+            zigzag_path.clear()
+            zigzag_bushes.clear()
+            zigzag_trees.clear()
+            obstacles.clear()
+
+
+
+            player.x = WORLD_W // 2
+            player.y = WORLD_H - 200
+
+
+
+            x = WORLD_W // 2
+            y = WORLD_H - 500
 
             direction = 1
 
+
+            for x in range(0, WORLD_W, 96):
+
+                forest_trees.append(
+                    pygame.Rect(
+                        x,
+                        WORLD_H - 160,
+                        96,
+                        128
+                    )
+                )
             for i in range(8):
 
                 for step in range(30):
-                    for w in range(3):  # FORCE 3 TILE WIDTH
+                    for w in range(path_width):
                         zigzag_path.append(
                             pygame.Rect(
                                 x + step * TILE_SIZE,
@@ -1417,48 +1473,45 @@ while running:
                             )
                         )
 
-                    if step % 5 == 0:
-                        zigzag_bushes.append(
-                            pygame.Rect(
-                                x + step * TILE_SIZE,
-                                y - TILE_SIZE,
-                                TILE_SIZE,
-                                TILE_SIZE
-                            )
-                        )
+                zigzag_bushes.append(
+                    pygame.Rect(
+                        x + 30 * TILE_SIZE,
+                        y,
+                        TILE_SIZE,
+                        TILE_SIZE
+                    )
+                )
 
                 zigzag_trees.append(
                     pygame.Rect(
                         x + 30 * TILE_SIZE,
-                        y,
-                        96,
-                        128
+                        y - TILE_SIZE,
+                        32,
+                        64
                     )
                 )
 
-                x += 30 * TILE_SIZE * direction
-                y -= 4 * TILE_SIZE
+                y -= 6 * TILE_SIZE
                 direction *= -1
+
+
+                x += direction * 400
                 
-            if world_id == 3:
 
-                show_area_name("First Town")
 
-                zigzag_path.clear()
-                zigzag_bushes.clear()
-                zigzag_trees.clear()
+            # trees along route edges
+            for i in range(20):
 
-                for i in range(20):
-                    zigzag_path.append(
-                        pygame.Rect(
-                            700 + (i * TILE_SIZE),
-                            1500,
-                            TILE_SIZE,
-                            TILE_SIZE
-                        )
-                    )
+                tree = pygame.Rect(
+                    100 + i*150,
+                    300,
+                    32,
+                    64
+                )
 
-            game_state = "world"
+                zigzag_trees.append(tree)
+
+                obstacles.append(tree)
         for obstacle in obstacles:
             if player.colliderect(obstacle):
 
@@ -1582,6 +1635,7 @@ while running:
 
         pygame.display.flip()
     elif game_state == "house1":
+        desired_move = None
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -1604,6 +1658,14 @@ while running:
 
                     battle_message = f"You chose {playerPokemon.name}!"
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            desired_move = (0, -1)
+        elif keys[pygame.K_DOWN]:
+            desired_move = (0, 1)
+        elif keys[pygame.K_LEFT]:
+            desired_move = (-1, 0)
+        elif keys[pygame.K_RIGHT]:
+            desired_move = (1, 0)
         pygame.draw.rect(screen, "blue", starter_npc)
         draw_text("Professor", starter_npc.x - 10, starter_npc.y - 20)
         if house_player.colliderect(house_exit):
@@ -1698,35 +1760,50 @@ while running:
         else:
             is_sprinting = False
     # start movement
-        if not moving:
-            if keys[pygame.K_UP]:
-                move_y = -1
-                move_x = 0
-                moving = True
-                direction = "up"
-            elif keys[pygame.K_DOWN]:
-                move_y = 1
-                move_x = 0
-                moving = True
-                direction = "down"
-            elif keys[pygame.K_LEFT]:
-                move_x = -1
-                move_y = 0
-                moving = True
-                direction = "left"
-            elif keys[pygame.K_RIGHT]:
-                move_x = 1
-                move_y = 0
-                moving = True
-                direction = "right"
-        # Set tile target
+        if desired_move is None:
             if moving:
-                target_x = house_player.x + move_x * tile_size
-                target_y = house_player.y + move_y * tile_size
-                target_x = max(0, min(WIDTH - player_width, target_x))
-                target_y = max(0, min(HEIGHT - player_height, target_y))
-                if target_x == house_player.x and target_y == house_player.y:
-                    moving = False
+                moving = False
+                move_x = 0
+                move_y = 0
+                target_x = round(house_player.x / tile_size) * tile_size
+                target_y = round(house_player.y / tile_size) * tile_size
+                house_player.x = target_x
+                house_player.y = target_y
+        elif not moving:
+            move_x, move_y = desired_move
+            moving = True
+            if move_y < 0:
+                direction = "up"
+            elif move_y > 0:
+                direction = "down"
+            elif move_x < 0:
+                direction = "left"
+            else:
+                direction = "right"
+            target_x = house_player.x + move_x * tile_size
+            target_y = house_player.y + move_y * tile_size
+            target_x = max(0, min(WIDTH - player_width, target_x))
+            target_y = max(0, min(HEIGHT - player_height, target_y))
+            if target_x == house_player.x and target_y == house_player.y:
+                moving = False
+                move_x = 0
+                move_y = 0
+                target_x = house_player.x
+                target_y = house_player.y
+        elif moving and house_player.x == target_x and house_player.y == target_y:
+            move_x, move_y = desired_move
+            if move_y < 0:
+                direction = "up"
+            elif move_y > 0:
+                direction = "down"
+            elif move_x < 0:
+                direction = "left"
+            else:
+                direction = "right"
+            target_x = house_player.x + move_x * tile_size
+            target_y = house_player.y + move_y * tile_size
+            target_x = max(0, min(WIDTH - player_width, target_x))
+            target_y = max(0, min(HEIGHT - player_height, target_y))
         if moving:
         # animation
             frame += animation_speed
