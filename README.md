@@ -17,3 +17,5 @@ still trying to incorparate the lab, so battel arnt in the game from patch 4 onw
 pokemon is a small adventure game with pokemon battles and currently 1 route, though i made it unaccesable as it glitch and lags a lot  
 vidoe link of projects below
 https://youtu.be/VlPs5_eYtWs
+video link of battle and run for pokemon
+https://youtu.be/zqLYIQ2MmSI
