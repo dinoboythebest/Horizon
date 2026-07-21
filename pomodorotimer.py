@@ -1,24 +1,21 @@
 import tkinter as tk
 import math
 reps=0
-# ---------------------------- CONSTANTS ------------------------------- #
-# Time in minutes
+
 WORK_MIN = 0.1
 SHORT_BREAK_MIN = 0.1
 LONG_BREAK_MIN =0.1
 timer = None
 
-# ---------------------------- TIMER RESET ------------------------------- # 
 def reset_timer():
     global timer, reps
     window.after_cancel(timer)
-    timer = None # Reset the timer variable
-    reps = 0     # Reset the session count
+    timer = None 
+    reps = 0     
     canvas.itemconfig(timer_text, text="00:00")
     title_label.config(text="Timer", fg="black")
     check_marks.config(text="")
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
     global reps, timer
     if timer:
@@ -26,7 +23,6 @@ def start_timer():
 
     reps += 1
     
-    # Using constants instead of typing the numbers 20, 5, and 25 again
     if reps % 8 == 0:
         count_down(LONG_BREAK_MIN * 60)
         title_label.config(text="Long Break", fg="blue")
@@ -38,9 +34,8 @@ def start_timer():
         title_label.config(text="Work", fg="red")
      
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def count_down(count):
-    global timer  # <--- PUT IT HERE, AT THE VERY TOP
+    global timer  
     
     count_min = math.floor(count / 60)
     count_sec = count % 60
@@ -51,22 +46,21 @@ def count_down(count):
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     
     if count > 0:
-        # We don't need 'global timer' here anymore
+       
         timer = window.after(1000, count_down, count - 1)
     else:
-        # We don't need 'global timer' here anymore either
+        
         timer = None  
         
         start_timer()
         
-        # Checkmark logic...
+        
         marks = ""
         work_sessions = math.floor(reps / 2)
         for _ in range(work_sessions):
             marks += "✔"
         check_marks.config(text=marks)
-# ---------------------------- UI SETUP ------------------------------- #
-window = tk.Tk()  # <--- THIS MUST COME FIRST
+window = tk.Tk()  
 window.title("My Pomodoro")
 window.config(padx=100, pady=50)
 
@@ -77,7 +71,6 @@ canvas = tk.Canvas(width=200, height=150, highlightthickness=0)
 timer_text = canvas.create_text(100, 75, text="00:00", fill="black", font=("Arial", 35, "bold"))
 canvas.grid(column=1, row=1)
 
-# Now it's safe to create these because 'window' exists
 check_marks = tk.Label(text="", fg="green")
 check_marks.grid(column=1, row=3)
 
