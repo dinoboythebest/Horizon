@@ -1,8 +1,6 @@
 just a bunch of project
 notes  for coding is just a bunch of notes with the help of ai
 flashcard dungeons pomodorotier prectice and story are all small project
-
-
 ai is used to make framwork for projects below
 flashcard is abunch of english to french flashcards
 pomodoro timer is a timer for work and break, though its sped up and only a few seconds
