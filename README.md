@@ -13,7 +13,12 @@ pretice and note for coding are some note made by ai
 pokemon is the main one 
 ai was used to fix a few small bugs
 still trying to incorparate the lab, so battel arnt in the game from patch 4 onwards
-pokemon is a small adventure game with pokemon battles and currently 1 route, though i made it unaccesable as it glitch and lags a lot  
+pokemon is a small adventure game with pokemon battles and currently 1 route, though i made it unaccesable as it glitch and lags a lot
+controls are
+x for run
+need to get running shoe before your able to run
+enter to use a move
+arrow to move and select a move during battle
 vidoe link of projects below
 https://youtu.be/VlPs5_eYtWs
 video link of battle and run for pokemon
