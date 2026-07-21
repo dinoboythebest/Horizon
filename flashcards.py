@@ -1,8 +1,7 @@
 import tkinter as tk
 import random
 
-# ---------------------------- DATA ------------------------------- #
-# You can add more words to this list!
+
 words = [
     {"English": "Hello", "French": "Bonjour"},
     {"English": "Bread", "French": "Pain"},
@@ -11,7 +10,6 @@ words = [
 ]
 current_card = {}
 
-# ---------------------------- FUNCTIONS ------------------------------- #
 def next_card():
     global current_card
     current_card = random.choice(words)
@@ -24,7 +22,6 @@ def flip_card():
     canvas.itemconfig(card_word, text=current_card["French"], fill="white")
     canvas.config(bg="blue")
 
-# ---------------------------- UI SETUP ------------------------------- #
 window = tk.Tk()
 window.title("Flashy")
 window.config(padx=50, pady=50)
@@ -34,7 +31,7 @@ card_title = canvas.create_text(200, 100, text="Title", font=("Arial", 20, "ital
 card_word = canvas.create_text(200, 160, text="Word", font=("Arial", 40, "bold"))
 canvas.grid(column=0, row=0, columnspan=2)
 
-# Buttons
+
 flip_button = tk.Button(text="FLIP", command=flip_card)
 flip_button.grid(column=0, row=1)
 
