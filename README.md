@@ -3,9 +3,12 @@ notes  for coding is just a bunch of notes with the help of ai
 flashcard dungeons pomodorotier prectice and story are all small project
 ai is used to make framwork for projects below
 flashcard is abunch of english to french flashcards
+left click the button and left click to flip cards
 pomodoro timer is a timer for work and break, though its sped up and only a few seconds
+no controls
 ai is used to correct spelling anf glitchs in projects below
 dugeons is a text choice dungeon game
+type your choice and press enter once your done
 strory is also the same just  diffrent 
 pretice and note for coding are some note made by ai
 pokemon is the main one 
@@ -21,3 +24,4 @@ vidoe link of projects below
 https://youtu.be/VlPs5_eYtWs
 video link of battle and run for pokemon
 https://youtu.be/zqLYIQ2MmSI
+
