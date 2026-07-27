@@ -29,5 +29,4 @@ def cave_path():
     else:
         print("You tripped in the dark. YOU LOSE.")
 
-# This is how we kick off the whole story
 start_game()

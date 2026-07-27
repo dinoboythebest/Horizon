@@ -3,6 +3,28 @@ print("my name is sigma")
 sigma=10
 print(sigma)
 print(f"i love {sigma}")
+#classes
+#blueprint for making objects
+#examples:makin a class claed pokemon to decribe the pokemon stats and typings
+#exmapls:making a class for diffrent chractre to decribe them
+class Pokemon:
+    def __init__(self, name, speed, attack, hp):
+        self.name = name
+        # makes it a dictionary
+        self.stats = {
+            "Speed": speed,
+            "Attack": attack,
+            "HP": hp
+        }
+
+player = Pokemon("Pikachu", 100, 100, 90)
+#need to use a period then the specific thing you want to decribe about the player like the name or the stats
+#if ther is a dictionary then you need to use [""] with the name 
+print(f"{player.stats["Speed"]}")
+#normally though dictionary will not be used 
+print(f"{player.name}")
+
+
 
 
 
